@@ -1,0 +1,15 @@
+version: '3'
+services:
+  api:
+    build: .
+    container_name: api
+    ports:
+        - "5000:5000"
+    volumes:
+        - .:/app
+
+  mongo:
+    image: "mongo:latest"
+    container_name: database
+    ports:
+        - "27017:27017"
