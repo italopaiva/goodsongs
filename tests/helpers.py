@@ -1,6 +1,18 @@
 """Test helpers module."""
 
+from jsonschema import validate
+
 from mongoengine.connection import _get_db
+
+
+def matches_json(data, schema):
+    """Check if the given JSON response matches the given schema."""
+    try:
+        validate(data, schema)
+    except Exception:
+        return False
+    else:
+        return True
 
 
 def clean_test_database():
