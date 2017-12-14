@@ -1,9 +1,8 @@
 from flask import url_for
 
+from .schemas import songs_schema
+
 from ..helpers import matches_json
-
-
-songs_schema = {}
 
 
 def test_get_songs(client):
