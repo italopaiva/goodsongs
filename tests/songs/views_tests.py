@@ -89,6 +89,14 @@ class TestSearchSongsView(TestViewBaseClass):
     def songs_with_special_title(self, special_names):
         return [SongFactory.create(title=title) for title in special_names]
 
+    @pytest.fixture
+    def songs_with_regular_artist(self, names):
+        return [SongFactory.create(artist=name) for name in names]
+
+    @pytest.fixture
+    def songs_with_special_artist(self, special_names):
+        return [SongFactory.create(artist=name) for name in special_names]
+
     @pytest.mark.usefixtures(
         'songs_with_regular_title',
         'songs_with_special_title'
@@ -118,3 +126,18 @@ class TestSearchSongsView(TestViewBaseClass):
 
         for song in self.response_data():
             assert message in song['title'].lower()
+
+    @pytest.mark.usefixtures(
+        'songs_with_regular_artist',
+        'songs_with_special_artist',
+    )
+    def test_search_for_songs_artist(self, special_names):
+        message = 'Special'
+
+        self.get(params={'message': message})
+
+        self.assert_response_ok()
+        self.assert_quantity_of_items(len(special_names))
+
+        for song in self.response_data():
+            assert message in song['artist']
