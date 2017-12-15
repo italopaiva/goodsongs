@@ -72,7 +72,7 @@ class TestViewBaseClass(object):
             assert matches_json(self.response.json, self.schema)
 
     def assert_pagination_meta_ok(self, current_page, total_pages):
-        """Check if paginationo metadata is present on response."""
+        """Check if pagination metadata is present on response."""
         response = self.response.json
         if 'meta' in response:
             metadata = response['meta']
@@ -82,3 +82,13 @@ class TestViewBaseClass(object):
                 assert metadata['next_page'] == current_page + 1
             if 'previous_page' in metadata:
                 assert metadata['previous_page'] == current_page - 1
+
+    def assert_data_attr_contains(self, attr, message, case_insensitive=False):
+        """Assert response data items specific attr contains the given message.
+
+        Check if an attribute of each item in
+        response data contains the given message.
+        """
+        for item in self.response_data():
+            item_attr = item[attr].lower() if case_insensitive else item[attr]
+            assert message in item_attr

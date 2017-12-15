@@ -102,57 +102,53 @@ class TestSearchSongsView(TestViewBaseClass):
         'songs_with_special_title'
     )
     def test_search_for_songs_title(self, special_names):
+        attr = 'title'
         message = 'Special'
 
         self.get(params={'message': message})
 
         self.assert_response_ok()
         self.assert_quantity_of_items(len(special_names))
-
-        for song in self.response_data():
-            assert message in song['title']
+        self.assert_data_attr_contains(attr, message)
 
     @pytest.mark.usefixtures(
         'songs_with_regular_title',
         'songs_with_special_title'
     )
     def test_search_for_songs_title_case_insensitive(self, special_names):
+        attr = 'title'
         message = 'special'
 
         self.get(params={'message': message})
 
         self.assert_response_ok()
         self.assert_quantity_of_items(len(special_names))
-
-        for song in self.response_data():
-            assert message in song['title'].lower()
+        self.assert_data_attr_contains(attr, message, case_insensitive=True)
 
     @pytest.mark.usefixtures(
         'songs_with_regular_artist',
         'songs_with_special_artist',
     )
     def test_search_for_songs_artist(self, special_names):
+        attr = 'artist'
         message = 'Special'
 
         self.get(params={'message': message})
 
         self.assert_response_ok()
         self.assert_quantity_of_items(len(special_names))
-
-        for song in self.response_data():
-            assert message in song['artist']
+        self.assert_data_attr_contains(attr, message)
 
     @pytest.mark.usefixtures(
         'songs_with_regular_artist',
         'songs_with_special_artist',
     )
     def test_search_for_songs_artist_case_insensitive(self, special_names):
+        attr = 'artist'
         message = 'special'
 
         self.get(params={'message': message})
 
         self.assert_response_ok()
         self.assert_quantity_of_items(len(special_names))
-
-        for song in self.response_data():
-            assert message in song['artist'].lower()
+        self.assert_data_attr_contains(attr, message, case_insensitive=True)
