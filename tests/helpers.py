@@ -53,6 +53,10 @@ class TestViewBaseClass(object):
 
         return url
 
+    def response_data(self):
+        """Return the response 'data' item."""
+        return self.response.json['data']
+
     def assert_quantity_of_items(self, quantity):
         """Check if the returned data from response matches the quantity."""
         assert len(self.response.json['data']) == quantity
@@ -60,7 +64,12 @@ class TestViewBaseClass(object):
     def assert_response_ok(self):
         """Check if response has OK status and matches the given schema."""
         assert self.response.status_code == 200
-        assert matches_json(self.response.json, self.schema)
+        self.assert_matches_schema()
+
+    def assert_matches_schema(self):
+        """Check if the JSON response matches the given JSON schema."""
+        if self.schema:
+            assert matches_json(self.response.json, self.schema)
 
     def assert_pagination_meta_ok(self, current_page, total_pages):
         """Check if paginationo metadata is present on response."""
