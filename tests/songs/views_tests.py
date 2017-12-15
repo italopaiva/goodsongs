@@ -141,3 +141,18 @@ class TestSearchSongsView(TestViewBaseClass):
 
         for song in self.response_data():
             assert message in song['artist']
+
+    @pytest.mark.usefixtures(
+        'songs_with_regular_artist',
+        'songs_with_special_artist',
+    )
+    def test_search_for_songs_artist_case_insensitive(self, special_names):
+        message = 'special'
+
+        self.get(params={'message': message})
+
+        self.assert_response_ok()
+        self.assert_quantity_of_items(len(special_names))
+
+        for song in self.response_data():
+            assert message in song['artist'].lower()

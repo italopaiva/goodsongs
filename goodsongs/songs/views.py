@@ -39,7 +39,7 @@ def search_songs():
             "_id": {
                 "$oid": "5a3327d2008b90001ce60239"
             },
-            "artist": "The Yousicians",
+            "artist": "Special Artist 1",
             "difficulty": 14.6,
             "level": 13,
             "released": {
@@ -51,7 +51,7 @@ def search_songs():
             "_id": {
                 "$oid": "5a3327d2008b90001ce60239"
             },
-            "artist": "The Yousicians",
+            "artist": "Special Artist 2",
             "difficulty": 14.6,
             "level": 13,
             "released": {
