@@ -2,7 +2,7 @@
 
 from flask import Blueprint, request
 
-from goodsongs.api_responses import ok, unprocessable_entity
+from goodsongs.api_responses import ok
 from goodsongs.models import Song
 from goodsongs.pagination import get_pagination_params, paginate
 
@@ -71,8 +71,6 @@ def add_rating():
     song_id = data['song_id']
 
     song = Song.get(song_id)
-
-    if not (rating >= 1 and rating <= 5):
-        return unprocessable_entity()
+    song.add_rating(rating)
 
     return ok()

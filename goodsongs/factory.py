@@ -47,10 +47,15 @@ def register_cli(app):
 
 def register_errors_handlers(app):
     """Register application general errors handlers."""
-    from goodsongs.errors import NotFoundError
-    from goodsongs.api_responses import not_found
+    from goodsongs.errors import NotFoundError, InvalidRecordError
+    from goodsongs.api_responses import not_found, unprocessable_entity
 
     @app.errorhandler(NotFoundError)
     def not_found_error_handler(error):
         """Error handler for when NotFoundError be raised."""
         return not_found(message=str(error))
+
+    @app.errorhandler(InvalidRecordError)
+    def invalid_record_error_handler(error):
+        """Error handler for when InvalidRecordError be raised."""
+        return unprocessable_entity(message=str(error))
