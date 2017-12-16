@@ -99,7 +99,7 @@ class TestSearchSongsView(TestViewBaseClass):
 
     @pytest.mark.usefixtures(
         'songs_with_regular_title',
-        'songs_with_special_title'
+        'songs_with_special_title',
     )
     def test_search_for_songs_title(self, special_names):
         attr = 'title'
@@ -113,7 +113,7 @@ class TestSearchSongsView(TestViewBaseClass):
 
     @pytest.mark.usefixtures(
         'songs_with_regular_title',
-        'songs_with_special_title'
+        'songs_with_special_title',
     )
     def test_search_for_songs_title_case_insensitive(self, special_names):
         attr = 'title'
@@ -152,3 +152,13 @@ class TestSearchSongsView(TestViewBaseClass):
         self.assert_response_ok()
         self.assert_quantity_of_items(len(special_names))
         self.assert_data_attr_contains(attr, message, case_insensitive=True)
+
+    @pytest.mark.usefixtures(
+        'songs_with_regular_title',
+        'songs_with_special_title',
+    )
+    def test_search_for_songs_without_message(self, names, special_names):
+        self.get(params={})
+
+        self.assert_response_ok()
+        self.assert_quantity_of_items(len(special_names) + len(names))
