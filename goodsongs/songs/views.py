@@ -1,7 +1,8 @@
 """Songs endpoints."""
 
-from flask import Blueprint, abort, jsonify, request
+from flask import Blueprint, request
 
+from goodsongs.api_responses import not_found, ok, unprocessable_entity
 from goodsongs.models import Song
 from goodsongs.pagination import get_pagination_params, paginate
 
@@ -21,7 +22,7 @@ def get_songs():
     all_songs = Song.objects
     paginated_songs = paginate(all_songs, page=page, per_page=per_page)
 
-    return jsonify(paginated_songs)
+    return ok(paginated_songs)
 
 
 @songs.route('/search', methods=['GET'])
@@ -37,7 +38,7 @@ def search_songs():
     message = request.args.get('message') or ''
     found_songs = Song.find_by_title_or_artist(message)
 
-    return jsonify({'data': found_songs})
+    return ok(found_songs)
 
 
 @songs.route('/avg/difficulty', methods=['GET'])
@@ -52,7 +53,7 @@ def get_songs_difficulty_average():
 
     average = Song.difficulty_average(level=level)
 
-    return jsonify({'data': {'average': average}})
+    return ok({'average': average})
 
 
 @songs.route('/rating', methods=['POST'])
@@ -70,9 +71,9 @@ def add_rating():
     song_id = data['song_id']
 
     if song_id == 10:
-        abort(404)
+        return not_found()
 
-    if rating >= 1 and rating <= 5:
-        return jsonify({})
-    else:
-        abort(422)
+    if not (rating >= 1 and rating <= 5):
+        return unprocessable_entity()
+
+    return ok()
