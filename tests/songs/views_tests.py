@@ -244,3 +244,13 @@ class TestGetSongsDifficultyAverageView(TestViewBaseClass):
 
         self.assert_response_ok()
         assert average == expected_average
+
+    def test_get_songs_difficulty_avg_for_no_songs(self):
+        expected_average = 0
+
+        self.get()
+
+        average = self.response_data()['average']
+
+        self.assert_response_ok()
+        assert average == expected_average
