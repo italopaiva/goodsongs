@@ -359,3 +359,17 @@ class TestAddRatingView(TestViewBaseClass):
         self.post(data=data)
 
         self.assert_response_not_found()
+
+    def test_add_new_rating_to_song(self, song):
+        rating = 3
+        data = {
+            'song_id': str(song.pk),
+            'rating': rating,
+        }
+
+        self.post(data=data)
+
+        song.reload()
+
+        self.assert_response_ok()
+        assert song.ratings[0]['value'] == rating

@@ -26,6 +26,8 @@ class Song(db.Document):
 
     meta = {'collection': 'songs'}
 
+    ratings = [{'value': 3}]
+
     @classmethod
     def get(cls, song_id):
         """Find a song by its Object ID."""
