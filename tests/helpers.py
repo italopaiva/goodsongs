@@ -75,6 +75,10 @@ class TestViewBaseClass(object):
         """Check if response has unprocessable entity status (422)."""
         assert self.response.status_code == 422
 
+    def assert_response_not_found(self):
+        """Check if response has not found status (404)."""
+        assert self.response.status_code == 404
+
     def assert_matches_schema(self):
         """Check if the JSON response matches the given JSON schema."""
         if self.schema:

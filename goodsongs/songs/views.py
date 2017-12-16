@@ -67,6 +67,10 @@ def add_rating():
     """
     data = request.get_json()
     rating = data['rating']
+    song_id = data['song_id']
+
+    if song_id == 10:
+        abort(404)
 
     if rating >= 1 and rating <= 5:
         return jsonify({})

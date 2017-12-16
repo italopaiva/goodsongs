@@ -347,3 +347,15 @@ class TestAddRatingView(TestViewBaseClass):
         self.post(data=data)
 
         self.assert_response_unprocessable_entity()
+
+    def test_add_rating_to_nonexistent_song(self):
+        rating = 1
+        nonexistent_song_id = 10
+        data = {
+            'song_id': nonexistent_song_id,
+            'rating': rating,
+        }
+
+        self.post(data=data)
+
+        self.assert_response_not_found()
