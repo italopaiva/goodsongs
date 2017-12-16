@@ -162,3 +162,18 @@ class TestSearchSongsView(TestViewBaseClass):
 
         self.assert_response_ok()
         self.assert_quantity_of_items(len(special_names) + len(names))
+
+    @pytest.mark.usefixtures(
+        'songs_with_regular_title',
+        'songs_with_special_artist',
+    )
+    @pytest.mark.parametrize('some_songs', [5], indirect=True)
+    def test_search_for_songs_with_title_and_artist(
+        self, names, special_names, some_songs
+    ):
+        message = 'Name'
+
+        self.get(params={'message': message})
+
+        self.assert_response_ok()
+        self.assert_quantity_of_items(len(special_names) + len(names))
