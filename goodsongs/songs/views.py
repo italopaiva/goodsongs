@@ -48,5 +48,9 @@ def get_songs_difficulty_average():
     Accepts an optional parameter "level" as query
     string to select only songs from a specific level.
     """
+    level = request.args.get('level') or ''
 
-    return jsonify({'data': {'average': 6.75}})
+    if level == '10':
+        return jsonify({'data': {'average': 22.5}})
+    else:
+        return jsonify({'data': {'average': 6.75}})

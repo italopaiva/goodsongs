@@ -190,10 +190,32 @@ class TestGetSongsDifficultyAverageView(TestViewBaseClass):
         return [10, 5.5, 6.7, 6.5, 8.8, 3]
 
     @pytest.fixture
+    def level_two_difficulties(self):
+        return [1, 2, 3, 4]
+
+    @pytest.fixture
+    def level_ten_difficulties(self):
+        return [15, 20, 25, 30]
+
+    @pytest.fixture
     def songs_with_difficulties(self, difficulties):
         return [
             SongFactory.create(difficulty=difficulty)
             for difficulty in difficulties
+        ]
+
+    @pytest.fixture
+    def level_ten_songs(self, level_ten_difficulties):
+        return [
+            SongFactory.create(difficulty=difficulty, level=10)
+            for difficulty in level_ten_difficulties
+        ]
+
+    @pytest.fixture
+    def level_two_songs(self, level_two_difficulties):
+        return [
+            SongFactory.create(difficulty=difficulty, level=2)
+            for difficulty in level_two_difficulties
         ]
 
     @pytest.mark.usefixtures('songs_with_difficulties')
@@ -201,6 +223,22 @@ class TestGetSongsDifficultyAverageView(TestViewBaseClass):
         expected_average = sum(difficulties) / float(len(difficulties))
 
         self.get()
+
+        average = self.response_data()['average']
+
+        self.assert_response_ok()
+        assert average == expected_average
+
+    @pytest.mark.usefixtures('level_ten_songs', 'level_two_songs')
+    def test_get_songs_difficulty_avg_for_specific_level(
+        self, level_ten_difficulties
+    ):
+        difficulties_sum = sum(level_ten_difficulties)
+        difficulties_count = len(level_ten_difficulties)
+        expected_average = difficulties_sum / float(difficulties_count)
+        level = 10
+
+        self.get(params={'level': level})
 
         average = self.response_data()['average']
 
