@@ -1,5 +1,7 @@
 """Test helpers module."""
 
+import json
+
 from flask import url_for
 
 from jsonschema import validate
@@ -48,7 +50,11 @@ class TestViewBaseClass(object):
     def post(self, data=None):
         """Perform a POST request to class URL attribute with given data."""
         url = url_for(self.url)
-        self.response = self.client.post(url, data=data)
+        self.response = self.client.post(
+            url,
+            data=json.dumps(data),
+            content_type='application/json',
+        )
 
         return self.response
 
