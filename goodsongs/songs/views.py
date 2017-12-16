@@ -34,29 +34,7 @@ def search_songs():
     The search is case insensitive and will search
     for song's and artist's names.
     """
-    return jsonify({'data': [
-        {
-            "_id": {
-                "$oid": "5a3327d2008b90001ce60239"
-            },
-            "artist": "Special Artist 1",
-            "difficulty": 14.6,
-            "level": 13,
-            "released": {
-                "$date": 1477440000000
-            },
-            "title": "Special Name 1"
-        },
-        {
-            "_id": {
-                "$oid": "5a3327d2008b90001ce60239"
-            },
-            "artist": "Special Artist 2",
-            "difficulty": 14.6,
-            "level": 13,
-            "released": {
-                "$date": 1477440000000
-            },
-            "title": "Special Name 2"
-        },
-    ]})
+    message = request.args.get('message') or ''
+    found_songs = Song.find_by_title_or_artist(message)
+
+    return jsonify({'data': found_songs})

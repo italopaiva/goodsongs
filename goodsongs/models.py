@@ -4,6 +4,8 @@ from datetime import datetime
 
 from flask_mongoengine import MongoEngine
 
+from mongoengine.queryset.visitor import Q
+
 
 db = MongoEngine()
 
@@ -18,6 +20,13 @@ class Song(db.Document):
     released = db.DateTimeField()
 
     meta = {'collection': 'songs'}
+
+    @classmethod
+    def find_by_title_or_artist(cls, message):
+        """Return songs containing the given message in title or artists."""
+        return cls.objects(
+            Q(title__icontains=message) | Q(artist__icontains=message)
+        )
 
     @classmethod
     def load_songs_from_file(cls, songs_file):
