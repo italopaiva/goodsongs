@@ -1,6 +1,6 @@
 """Songs endpoints."""
 
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, abort, jsonify, request
 
 from goodsongs.models import Song
 from goodsongs.pagination import get_pagination_params, paginate
@@ -65,4 +65,10 @@ def add_rating():
         rating -- The rating value to add to the song.
                   Ratings should be between 1 and 5.
     """
-    return jsonify({})
+    data = request.get_json()
+    rating = data['rating']
+
+    if rating >= 1 and rating <= 5:
+        return jsonify({})
+    else:
+        abort(422)

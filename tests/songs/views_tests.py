@@ -303,3 +303,47 @@ class TestAddRatingView(TestViewBaseClass):
         self.post(data=data)
 
         self.assert_response_ok()
+
+    def test_add_nearest_min_invalid_rating_to_song(self, song):
+        rating = self.MIN_VALID_RATING - 1
+        data = {
+            'song_id': str(song.pk),
+            'rating': rating,
+        }
+
+        self.post(data=data)
+
+        self.assert_response_unprocessable_entity()
+
+    def test_add_nearest_max_invalid_rating_to_song(self, song):
+        rating = self.MAX_VALID_RATING + 1
+        data = {
+            'song_id': str(song.pk),
+            'rating': rating,
+        }
+
+        self.post(data=data)
+
+        self.assert_response_unprocessable_entity()
+
+    def test_add_random_invalid_negative_rating_to_song(self, song):
+        rating = randint(-100, self.MIN_VALID_RATING - 1)
+        data = {
+            'song_id': str(song.pk),
+            'rating': rating,
+        }
+
+        self.post(data=data)
+
+        self.assert_response_unprocessable_entity()
+
+    def test_add_random_invalid_positive_rating_to_song(self, song):
+        rating = randint(self.MAX_VALID_RATING + 1, 100)
+        data = {
+            'song_id': str(song.pk),
+            'rating': rating,
+        }
+
+        self.post(data=data)
+
+        self.assert_response_unprocessable_entity()
