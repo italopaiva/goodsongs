@@ -4,8 +4,6 @@ import json
 
 from flask import current_app as app
 
-from flask_mongoengine import BaseQuerySet
-
 
 def get_pagination_params(request):
     """Return pagination params as keyword arguments on the view.
@@ -32,8 +30,6 @@ def paginate(data, page=1, per_page=None):
     Arguments:
         data -- A flask_mongoengine.BaseQuerySet instance
     """
-    assert isinstance(data, BaseQuerySet)
-
     per_page = app.config['DEFAULT_PER_PAGE'] if not per_page else per_page
     pagination_obj = data.paginate(page=page, per_page=per_page)
 
