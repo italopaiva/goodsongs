@@ -29,6 +29,19 @@ class Song(db.Document):
         )
 
     @classmethod
+    def difficulty_average(cls, level=None):
+        """Return songs difficulty average.
+
+        Accepts a level parameter to narrow the calculation for songs in level.
+        """
+        level_songs = Song.objects
+        if level:
+            level_songs = level_songs.filter(level=level)
+        average = level_songs.average('difficulty')
+
+        return average
+
+    @classmethod
     def load_songs_from_file(cls, songs_file):
         """Load songs from a JSON like file."""
         import json
