@@ -2,7 +2,12 @@
 
 from datetime import datetime
 
+from bson.errors import InvalidId
+from bson.objectid import ObjectId
+
 from flask_mongoengine import MongoEngine
+
+from goodsongs.errors import NotFoundError
 
 from mongoengine.queryset.visitor import Q
 
@@ -20,6 +25,15 @@ class Song(db.Document):
     released = db.DateTimeField()
 
     meta = {'collection': 'songs'}
+
+    @classmethod
+    def get(cls, song_id):
+        """Find a song by its Object ID."""
+        try:
+            song_object_id = ObjectId(song_id)
+            return cls.objects.get(pk=song_object_id)
+        except (cls.DoesNotExist, TypeError, InvalidId):
+            raise NotFoundError('Song with ID %s not found' % song_id)
 
     @classmethod
     def find_by_title_or_artist(cls, message):
