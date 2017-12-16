@@ -1,4 +1,6 @@
 # pylint: skip-file
+from random import randint
+
 import pytest
 
 from .schemas import all_songs_schema, songs_difficulty_schema
@@ -254,3 +256,50 @@ class TestGetSongsDifficultyAverageView(TestViewBaseClass):
 
         self.assert_response_ok()
         assert average == expected_average
+
+
+class TestAddRatingView(TestViewBaseClass):
+    """Test add_rating view."""
+
+    url = 'songs.add_rating'
+    schema = None
+
+    MIN_VALID_RATING = 1
+    MAX_VALID_RATING = 5
+
+    @pytest.fixture
+    def song(self):
+        return SongFactory.create()
+
+    def test_add_min_valid_rating_to_song(self, song):
+        rating = self.MIN_VALID_RATING
+        data = {
+            'song_id': str(song.pk),
+            'rating': rating,
+        }
+
+        self.post(data=data)
+
+        self.assert_response_ok()
+
+    def test_add_max_valid_rating_to_song(self, song):
+        rating = self.MAX_VALID_RATING
+        data = {
+            'song_id': str(song.pk),
+            'rating': rating,
+        }
+
+        self.post(data=data)
+
+        self.assert_response_ok()
+
+    def test_add_random_valid_rating_to_song(self, song):
+        rating = randint(self.MIN_VALID_RATING, self.MAX_VALID_RATING)
+        data = {
+            'song_id': str(song.pk),
+            'rating': rating,
+        }
+
+        self.post(data=data)
+
+        self.assert_response_ok()

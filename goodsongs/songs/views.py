@@ -53,3 +53,16 @@ def get_songs_difficulty_average():
     average = Song.difficulty_average(level=level)
 
     return jsonify({'data': {'average': average}})
+
+
+@songs.route('/rating', methods=['POST'])
+def add_rating():
+    """
+    Add a rating to the given song.
+
+    Arguments:
+        song_id -- ID of the song to be rated
+        rating -- The rating value to add to the song.
+                  Ratings should be between 1 and 5.
+    """
+    return jsonify({})
