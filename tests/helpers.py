@@ -71,6 +71,10 @@ class TestViewBaseClass(object):
         assert self.response.status_code == 200
         self.assert_matches_schema()
 
+    def assert_response_created(self):
+        """Check if response has Created status (201)."""
+        assert self.response.status_code == 201
+
     def assert_response_unprocessable_entity(self):
         """Check if response has unprocessable entity status (422)."""
         assert self.response.status_code == 422

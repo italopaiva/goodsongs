@@ -280,7 +280,7 @@ class TestAddRatingView(TestViewBaseClass):
 
         self.post(data=data)
 
-        self.assert_response_ok()
+        self.assert_response_created()
 
     def test_add_max_valid_rating_to_song(self, song):
         rating = self.MAX_VALID_RATING
@@ -291,7 +291,7 @@ class TestAddRatingView(TestViewBaseClass):
 
         self.post(data=data)
 
-        self.assert_response_ok()
+        self.assert_response_created()
 
     def test_add_random_valid_rating_to_song(self, song):
         rating = randint(self.MIN_VALID_RATING, self.MAX_VALID_RATING)
@@ -302,7 +302,7 @@ class TestAddRatingView(TestViewBaseClass):
 
         self.post(data=data)
 
-        self.assert_response_ok()
+        self.assert_response_created()
 
     def test_add_nearest_min_invalid_rating_to_song(self, song):
         rating = self.MIN_VALID_RATING - 1
@@ -371,5 +371,5 @@ class TestAddRatingView(TestViewBaseClass):
 
         song.reload()
 
-        self.assert_response_ok()
+        self.assert_response_created()
         assert song.ratings[0]['value'] == rating

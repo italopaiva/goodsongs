@@ -2,7 +2,7 @@
 
 from flask import Blueprint, request
 
-from goodsongs.api_responses import ok
+from goodsongs.api_responses import created, ok
 from goodsongs.models import Song
 from goodsongs.pagination import get_pagination_params, paginate
 
@@ -73,4 +73,4 @@ def add_rating():
     song = Song.get(song_id)
     song.add_rating(rating)
 
-    return ok()
+    return created()
