@@ -7,12 +7,21 @@ from bson.objectid import ObjectId
 
 from flask_mongoengine import MongoEngine
 
-from goodsongs.errors import NotFoundError
+from goodsongs.errors import InvalidRecordError, NotFoundError
 
+from mongoengine.errors import ValidationError
 from mongoengine.queryset.visitor import Q
 
 
 db = MongoEngine()
+
+
+class Rating(db.EmbeddedDocument):
+    """Represents a song rating."""
+
+    VALID_RATINGS = tuple(range(1, 6))
+
+    value = db.IntField(choices=VALID_RATINGS)
 
 
 class Song(db.Document):
@@ -23,10 +32,18 @@ class Song(db.Document):
     difficulty = db.FloatField()
     level = db.IntField()
     released = db.DateTimeField()
+    ratings = db.ListField(db.EmbeddedDocumentField(Rating))
 
     meta = {'collection': 'songs'}
 
-    ratings = [{'value': 3}]
+    def add_rating(self, rating_value):
+        """Add a new rating for the song."""
+        rating = Rating(value=rating_value)
+        self.ratings.append(rating)
+        try:
+            self.save()
+        except ValidationError:
+            raise InvalidRecordError('Ratings range from 1 to 5')
 
     @classmethod
     def get(cls, song_id):
