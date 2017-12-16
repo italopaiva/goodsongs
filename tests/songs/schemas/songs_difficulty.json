@@ -1,0 +1,18 @@
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://goodsongs.local",
+  "type": "object",
+  "properties": {
+    "data": {
+      "id": "/properties/data",
+      "type": "object",
+      "properties": {
+        "average": {
+          "id": "/properties/data/properties/average",
+          "type": "number"
+        }
+      }
+    }
+  }
+}

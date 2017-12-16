@@ -1,7 +1,7 @@
 # pylint: skip-file
 import pytest
 
-from .schemas import all_songs_schema
+from .schemas import all_songs_schema, songs_difficulty_schema
 
 from ..factories.song_factory import SongFactory
 
@@ -183,7 +183,7 @@ class TestGetSongsDifficultyAverageView(TestViewBaseClass):
     """Test get_songs_difficulty_average view."""
 
     url = 'songs.get_songs_difficulty_average'
-    schema = None
+    schema = songs_difficulty_schema
 
     @pytest.fixture
     def difficulties(self):
