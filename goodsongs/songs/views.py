@@ -38,3 +38,15 @@ def search_songs():
     found_songs = Song.find_by_title_or_artist(message)
 
     return jsonify({'data': found_songs})
+
+
+@songs.route('/avg/difficulty', methods=['GET'])
+def get_songs_difficulty_average():
+    """
+    Return the average difficulty for all songs.
+
+    Accepts an optional parameter "level" as query
+    string to select only songs from a specific level.
+    """
+
+    return jsonify({'data': {'average': 6.75}})

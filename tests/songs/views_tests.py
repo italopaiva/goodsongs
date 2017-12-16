@@ -177,3 +177,32 @@ class TestSearchSongsView(TestViewBaseClass):
 
         self.assert_response_ok()
         self.assert_quantity_of_items(len(special_names) + len(names))
+
+
+class TestGetSongsDifficultyAverageView(TestViewBaseClass):
+    """Test get_songs_difficulty_average view."""
+
+    url = 'songs.get_songs_difficulty_average'
+    schema = None
+
+    @pytest.fixture
+    def difficulties(self):
+        return [10, 5.5, 6.7, 6.5, 8.8, 3]
+
+    @pytest.fixture
+    def songs_with_difficulties(self, difficulties):
+        return [
+            SongFactory.create(difficulty=difficulty)
+            for difficulty in difficulties
+        ]
+
+    @pytest.mark.usefixtures('songs_with_difficulties')
+    def test_get_songs_difficulty_avg(self, difficulties):
+        expected_average = sum(difficulties) / float(len(difficulties))
+
+        self.get()
+
+        average = self.response_data()['average']
+
+        self.assert_response_ok()
+        assert average == expected_average
