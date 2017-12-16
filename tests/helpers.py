@@ -40,18 +40,17 @@ class TestViewBaseClass(object):
 
     def get(self, params=None):
         """Perform a GET request to class URL attribute with given params."""
-        url = self.build_url(params)
-        self.response = self.client.get(url)
-
-    def build_url(self, params):
-        """Assemble URL with given query strings params."""
         url = url_for(self.url)
-        if params:
-            url += '?'
-            for param, value in params.items():
-                url += '%s=%s&' % (param, value)
+        self.response = self.client.get(url, query_string=params)
 
-        return url
+        return self.response
+
+    def post(self, data=None):
+        """Perform a POST request to class URL attribute with given data."""
+        url = url_for(self.url)
+        self.response = self.client.post(url, data=data)
+
+        return self.response
 
     def response_data(self):
         """Return the response 'data' item."""
