@@ -1,5 +1,5 @@
 # pylint: skip-file
-from random import randint
+from random import choice, randint
 
 import pytest
 
@@ -385,8 +385,12 @@ class TestGetSongRatingsDataView(TestViewBaseClass):
     schema = song_ratings_data_schema
 
     @pytest.fixture
-    def ratings_values(self):
-        return [1, 3, 5]
+    def random_integer(self):
+        return randint(1, 100)
+
+    @pytest.fixture
+    def ratings_values(self, random_integer):
+        return [choice(list(range(1, 6))) for _ in range(random_integer)]
 
     @pytest.fixture
     def ratings(self, ratings_values):
@@ -398,11 +402,7 @@ class TestGetSongRatingsDataView(TestViewBaseClass):
 
     @pytest.fixture
     def unrated_song(self):
-        from bson.objectid import ObjectId
-        return SongFactory.create(
-            id=ObjectId('5a3595e07fa6930312a9666e'),
-            ratings=[]
-        )
+        return SongFactory.create(ratings=[])
 
     def test_get_rated_song_ratings_data(self, rated_song, ratings_values):
         self.url_params = {'song_id': str(rated_song.pk)}

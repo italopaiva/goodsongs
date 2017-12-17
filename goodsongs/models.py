@@ -45,6 +45,42 @@ class Song(db.Document):
         except ValidationError:
             raise InvalidRecordError('Ratings range from 1 to 5')
 
+    def get_ratings_data(self):
+        """Get the lowest, highest and average rating for the song."""
+        query = """
+        function (){
+            return db[collection].aggregate([
+                { "$match": { "_id": ObjectId(options.songId) } },
+                { "$unwind": "$ratings" },
+                {
+                    "$group": {
+                        "_id": "$_id",
+                        "average": { "$avg": "$ratings.value" },
+                        "lowest": { "$min": "$ratings.value" },
+                        "highest": { "$max": "$ratings.value" },
+                    }
+                }
+            ]);
+        }
+        """
+        options = {'songId': str(self.id)}
+        result = self.__class__.objects.exec_js(query, **options)
+        result = result['_batch']
+
+        if result:
+            ratings_data = result[0]
+            average = ratings_data['average']
+            lowest = ratings_data['lowest']
+            highest = ratings_data['highest']
+        else:
+            average = lowest = highest = None
+
+        return {
+            'average': average,
+            'lowest': lowest,
+            'highest': highest,
+        }
+
     @classmethod
     def get(cls, song_id):
         """Find a song by its Object ID."""
