@@ -35,6 +35,7 @@ class TestViewBaseClass(object):
     """
 
     url = None
+    url_params = {}
     schema = None
 
     def teardown_method(self, _method):
@@ -42,14 +43,14 @@ class TestViewBaseClass(object):
 
     def get(self, params=None):
         """Perform a GET request to class URL attribute with given params."""
-        url = url_for(self.url)
+        url = url_for(self.url, **self.url_params)
         self.response = self.client.get(url, query_string=params)
 
         return self.response
 
     def post(self, data=None):
         """Perform a POST request to class URL attribute with given data."""
-        url = url_for(self.url)
+        url = url_for(self.url, **self.url_params)
         self.response = self.client.post(
             url,
             data=json.dumps(data),

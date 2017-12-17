@@ -5,6 +5,7 @@ import pytest
 
 from .schemas import all_songs_schema, songs_difficulty_schema
 
+from ..factories.rating_factory import RatingFactory
 from ..factories.song_factory import SongFactory
 
 from ..helpers import TestViewBaseClass
@@ -373,3 +374,29 @@ class TestAddRatingView(TestViewBaseClass):
 
         self.assert_response_created()
         assert song.ratings[0]['value'] == rating
+
+
+class TestGetSongRatingsDataView(TestViewBaseClass):
+    """Test get_song_ratings_data view."""
+
+    url = 'songs.get_song_ratings_data'
+    schema = None
+
+    @pytest.fixture
+    def ratings_values(self):
+        return [1, 3, 5]
+
+    @pytest.fixture
+    def ratings(self, ratings_values):
+        return [RatingFactory.create(value=value) for value in ratings_values]
+
+    @pytest.fixture
+    def rated_song(self, ratings):
+        return SongFactory.create(ratings=ratings)
+
+    def test_get_rated_song_ratings_data(self, rated_song):
+        self.url_params = {'song_id': str(rated_song.pk)}
+
+        self.get()
+
+        self.assert_response_ok()

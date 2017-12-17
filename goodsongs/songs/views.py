@@ -74,3 +74,14 @@ def add_rating():
     song.add_rating(rating)
 
     return created()
+
+
+@songs.route('/avg/rating/<song_id>', methods=['GET'])
+def get_song_ratings_data(song_id):
+    """
+    Return the average, the lowest and the highest rating of the given song.
+
+    Arguments:
+        song_id -- ID of the song to search
+    """
+    return ok()
