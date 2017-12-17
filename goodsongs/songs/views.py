@@ -19,7 +19,7 @@ def get_songs():
     as a query strings to paginate the results.
     """
     page, per_page = get_pagination_params(request)
-    all_songs = Song.objects
+    all_songs = Song.objects.exclude('ratings')
     paginated_songs = paginate(all_songs, page=page, per_page=per_page)
 
     return ok(paginated_songs)

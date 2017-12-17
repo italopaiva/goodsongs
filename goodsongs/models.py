@@ -34,7 +34,13 @@ class Song(db.Document):
     released = db.DateTimeField()
     ratings = db.ListField(db.EmbeddedDocumentField(Rating))
 
-    meta = {'collection': 'songs'}
+    meta = {
+        'collection': 'songs',
+        'indexes': [
+            '$title',
+            '+level',
+        ]
+    }
 
     def add_rating(self, rating_value):
         """Add a new rating for the song."""
@@ -50,6 +56,7 @@ class Song(db.Document):
         query = """
         function (){
             return db[collection].aggregate([
+                { "$project": {"ratings": 1} },
                 { "$match": { "_id": ObjectId(options.songId) } },
                 { "$unwind": "$ratings" },
                 {
@@ -86,14 +93,14 @@ class Song(db.Document):
         """Find a song by its Object ID."""
         try:
             song_object_id = ObjectId(song_id)
-            return cls.objects.get(pk=song_object_id)
+            return cls.objects.exclude('ratings').get(pk=song_object_id)
         except (cls.DoesNotExist, TypeError, InvalidId):
             raise NotFoundError('Song with ID %s not found' % song_id)
 
     @classmethod
     def find_by_title_or_artist(cls, message):
         """Return songs containing the given message in title or artists."""
-        return cls.objects(
+        return cls.objects.exclude('ratings').filter(
             Q(title__icontains=message) | Q(artist__icontains=message)
         )
 
