@@ -62,11 +62,22 @@
           "id": "/properties/meta/properties/previous_page",
           "type": "integer"
         },
+        "next_page": {
+          "id": "/properties/meta/properties/next_page",
+          "type": "integer"
+        },
         "total_pages": {
           "id": "/properties/meta/properties/total_pages",
           "type": "integer"
         }
-      }
+      },
+      "required":[
+        "current_page",
+        "total_pages"
+      ]
     }
-  }
+  },
+  "required": [
+    "data"
+  ]
 }

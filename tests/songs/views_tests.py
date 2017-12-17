@@ -3,7 +3,9 @@ from random import randint
 
 import pytest
 
-from .schemas import all_songs_schema, songs_difficulty_schema
+from .schemas import all_songs_schema
+from .schemas import song_ratings_data_schema
+from .schemas import songs_difficulty_schema
 
 from ..factories.rating_factory import RatingFactory
 from ..factories.song_factory import SongFactory
@@ -380,7 +382,7 @@ class TestGetSongRatingsDataView(TestViewBaseClass):
     """Test get_song_ratings_data view."""
 
     url = 'songs.get_song_ratings_data'
-    schema = None
+    schema = song_ratings_data_schema
 
     @pytest.fixture
     def ratings_values(self):
@@ -394,9 +396,15 @@ class TestGetSongRatingsDataView(TestViewBaseClass):
     def rated_song(self, ratings):
         return SongFactory.create(ratings=ratings)
 
-    def test_get_rated_song_ratings_data(self, rated_song):
+    def test_get_rated_song_ratings_data(self, rated_song, ratings_values):
         self.url_params = {'song_id': str(rated_song.pk)}
 
         self.get()
 
+        data = self.response_data()
+        expected_average = sum(ratings_values) / float(len(ratings_values))
+
         self.assert_response_ok()
+        assert data['average'] == expected_average
+        assert data['lowest'] == min(ratings_values)
+        assert data['highest'] == max(ratings_values)

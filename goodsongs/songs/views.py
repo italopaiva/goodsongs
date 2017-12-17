@@ -84,4 +84,8 @@ def get_song_ratings_data(song_id):
     Arguments:
         song_id -- ID of the song to search
     """
-    return ok()
+    return ok(data={
+        'average': 3.0,
+        'lowest': 1,
+        'highest': 5,
+    })

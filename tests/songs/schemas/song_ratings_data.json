@@ -11,10 +11,20 @@
         "average": {
           "id": "/properties/data/properties/average",
           "type": "number"
+        },
+        "lowest": {
+          "id": "/properties/data/properties/lowest",
+          "type": "integer"
+        },
+        "highest": {
+          "id": "/properties/data/properties/highest",
+          "type": "integer"
         }
       },
       "required": [
-        "average"
+        "average",
+        "lowest",
+        "highest"
       ]
     }
   },
