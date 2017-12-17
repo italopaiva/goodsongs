@@ -17,3 +17,4 @@ class SongFactory(MongoEngineFactory):
     released = Sequence(
         lambda n: datetime.datetime.now() + datetime.timedelta(days=n)
     )
+    ratings = []
