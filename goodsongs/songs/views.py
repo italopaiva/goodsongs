@@ -84,6 +84,10 @@ def get_song_ratings_data(song_id):
     Arguments:
         song_id -- ID of the song to search
     """
+    if song_id == '10':
+        from goodsongs.api_responses import not_found
+        return not_found()
+
     if song_id == '5a3595e07fa6930312a9666e':
         return ok(data={
             'average': None,

@@ -428,3 +428,11 @@ class TestGetSongRatingsDataView(TestViewBaseClass):
         assert data['average'] is None
         assert data['lowest'] is None
         assert data['highest'] is None
+
+    def test_get_rating_data_of_nonexistent_song(self):
+        nonexistent_song_id = 10
+        self.url_params = {'song_id': nonexistent_song_id}
+
+        self.get()
+
+        self.assert_response_not_found()
