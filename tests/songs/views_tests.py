@@ -183,6 +183,19 @@ class TestSearchSongsView(TestViewBaseClass):
         self.assert_response_ok()
         self.assert_quantity_of_items(len(special_names) + len(names))
 
+    @pytest.mark.options(default_per_page=1)
+    @pytest.mark.usefixtures('songs_with_special_title')
+    def test_search_for_songs_with_pagination(self, special_names):
+        message = 'special'
+        total_pages = len(special_names)
+        current_page = 2
+
+        self.get(params={'message': message, 'page': current_page})
+
+        self.assert_response_ok()
+        self.assert_pagination_meta_ok(current_page, total_pages)
+        self.assert_quantity_of_items(1)
+
 
 class TestGetSongsDifficultyAverageView(TestViewBaseClass):
     """Test get_songs_difficulty_average view."""

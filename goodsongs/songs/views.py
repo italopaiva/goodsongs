@@ -32,13 +32,19 @@ def search_songs():
 
     Accepts "message" as a query string to be the search parameter.
 
+    Accepts page and per_page parameters
+    as a query strings to paginate the results.
+
     The search is case insensitive and will search
     for song's and artist's names.
     """
+    page, per_page = get_pagination_params(request)
     message = request.args.get('message') or ''
-    found_songs = Song.find_by_title_or_artist(message)
 
-    return ok(found_songs)
+    found_songs = Song.find_by_title_or_artist(message)
+    paginated_songs = paginate(found_songs, page=page, per_page=per_page)
+
+    return ok(paginated_songs)
 
 
 @songs.route('/avg/difficulty', methods=['GET'])
