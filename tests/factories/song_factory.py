@@ -1,6 +1,7 @@
 import datetime
+import random
 
-from factory import Sequence
+from factory import LazyFunction, Sequence
 from factory.mongoengine import MongoEngineFactory
 
 from goodsongs.models import Song
@@ -10,11 +11,9 @@ class SongFactory(MongoEngineFactory):
     class Meta:
         model = Song
 
-    artist = Sequence(lambda n: 'Artist %d' % n)
-    title = Sequence(lambda n: 'Title %d' % n)
-    difficulty = Sequence(lambda n: float(n))
-    level = Sequence(lambda n: n)
-    released = Sequence(
-        lambda n: datetime.datetime.now() + datetime.timedelta(days=n)
-    )
+    artist = Sequence(lambda n: 'Good musician %d' % n)
+    title = Sequence(lambda n: 'Good song %d' % n)
+    difficulty = LazyFunction(lambda: round(random.uniform(1.0, 20.0), 2))
+    level = LazyFunction(lambda: random.randint(1, 20))
+    released = datetime.datetime.now()
     ratings = []
