@@ -10,15 +10,15 @@
       "properties": {
         "average": {
           "id": "/properties/data/properties/average",
-          "type": "number"
+          "type": ["number", "null"]
         },
         "lowest": {
           "id": "/properties/data/properties/lowest",
-          "type": "integer"
+          "type": ["integer", "null"]
         },
         "highest": {
           "id": "/properties/data/properties/highest",
-          "type": "integer"
+          "type": ["integer", "null"]
         }
       },
       "required": [

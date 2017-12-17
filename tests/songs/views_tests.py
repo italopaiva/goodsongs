@@ -396,6 +396,14 @@ class TestGetSongRatingsDataView(TestViewBaseClass):
     def rated_song(self, ratings):
         return SongFactory.create(ratings=ratings)
 
+    @pytest.fixture
+    def unrated_song(self):
+        from bson.objectid import ObjectId
+        return SongFactory.create(
+            id=ObjectId('5a3595e07fa6930312a9666e'),
+            ratings=[]
+        )
+
     def test_get_rated_song_ratings_data(self, rated_song, ratings_values):
         self.url_params = {'song_id': str(rated_song.pk)}
 
@@ -408,3 +416,15 @@ class TestGetSongRatingsDataView(TestViewBaseClass):
         assert data['average'] == expected_average
         assert data['lowest'] == min(ratings_values)
         assert data['highest'] == max(ratings_values)
+
+    def test_get_unrated_song_ratings_data(self, unrated_song):
+        self.url_params = {'song_id': str(unrated_song.pk)}
+
+        self.get()
+
+        data = self.response_data()
+
+        self.assert_response_ok()
+        assert data['average'] is None
+        assert data['lowest'] is None
+        assert data['highest'] is None

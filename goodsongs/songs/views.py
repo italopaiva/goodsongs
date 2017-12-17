@@ -84,6 +84,13 @@ def get_song_ratings_data(song_id):
     Arguments:
         song_id -- ID of the song to search
     """
+    if song_id == '5a3595e07fa6930312a9666e':
+        return ok(data={
+            'average': None,
+            'lowest': None,
+            'highest': None,
+        })
+
     return ok(data={
         'average': 3.0,
         'lowest': 1,
