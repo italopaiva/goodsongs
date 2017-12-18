@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/italopaiva/goodsongs.svg?branch=master)](https://travis-ci.org/italopaiva/goodsongs)
+
 # Goodsongs
 Goodsongs is a Flask API that manages a MongoDB songs collection. It has the following endpoints:
 
@@ -80,7 +82,7 @@ To seed the database with `songs.json`, just run:
 
 ## Running tests
 
-NotifiCar is shipped with _tox_, so just run `tox` to run the test suite:
+Goodsongs is shipped with _tox_, so just run `tox` to run the test suite:
 
 - If using Docker:
     `$ docker exec -it api tox`
