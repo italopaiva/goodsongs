@@ -5,7 +5,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
-        'flask',
+        'Flask',
         'flask-mongoengine',
     ],
     setup_requires=[
