@@ -1,2 +1,2 @@
 [run]
-omit = tests/*,.tox/**/*, config/development.py
+omit = tests/*,.tox/**/*, config/development.py, run.py, setup.py
