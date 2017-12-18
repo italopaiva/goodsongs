@@ -2,4 +2,4 @@
 
 # Pagination configurations
 DEFAULT_PER_PAGE = 10
-MAX_PER_PAGE = 1000
+MAX_PER_PAGE = 10000
